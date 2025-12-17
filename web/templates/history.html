@@ -1,0 +1,116 @@
+{{define "history"}}
+<h2 class="history-title">История запросов</h2>
+<div class="history-list">
+    {{if .Data}}
+    {{range .Data}}
+    <div class="history-entry">
+        <p><strong>Дата:</strong> {{.SearchedAt.Format "2006-01-02 15:04:05"}}</p>
+
+        <div class="filter-details">
+            <p><strong>Город:</strong> {{.FiltersData.City}}</p>
+            <p><strong>Форма обучения:</strong> {{.FiltersData.Form}}</p>
+            <p><strong>Бюджет:</strong> {{if .FiltersData.Budget}}Да{{else}}Нет{{end}}</p>
+            <p><strong>Платное:</strong> {{if .FiltersData.Paid}}Да{{else}}Нет{{end}}</p>
+            <p><strong>Военный учебный центр:</strong> {{if .FiltersData.Military}}Да{{else}}Нет{{end}}</p>
+            <p><strong>Общежитие:</strong> {{if .FiltersData.Dormitory}}Да{{else}}Нет{{end}}</p>
+            <p><strong>Сумма баллов:</strong> {{.FiltersData.TotalScore}}</p>
+
+            <div class="subject-list">
+                <p><strong>Предметы:</strong></p>
+                {{if .FiltersData.Subjects}}
+                <ul>
+                    {{range .FiltersData.Subjects}}
+                    <li>Предмет ID: {{.}}</li>
+                    {{end}}
+                </ul>
+                {{else}}
+                <p>Не выбрано</p>
+                {{end}}
+            </div>
+        </div>
+
+        <button class="apply-filter-btn" data-filters='{{.Filters}}' onclick="applyFilters(this)">Перенести</button>
+    </div>
+    {{end}}
+    {{else}}
+    <p>История запросов пуста.</p>
+    {{end}}
+</div>
+
+<script>
+    function applyFilters(button) {
+        const filters = JSON.parse(button.getAttribute("data-filters"));
+
+        const params = new URLSearchParams();
+
+        if (filters.city) params.set("city", filters.city);
+        if (filters.form) params.set("form", filters.form);
+        if (filters.budget) params.set("budget", "yes");
+        if (filters.paid) params.set("paid", "yes");
+        if (filters.military) params.set("military", "yes");
+        if (filters.dormitory) params.set("dormitory", "yes");
+        if (filters.totalScore) params.set("totalScore", filters.totalScore);
+
+        if (filters.subjects && filters.subjects.length > 0) {
+            filters.subjects.forEach(subject => {
+                params.append("subjects", subject);
+            });
+        }
+
+        window.location.href = "/universities?" + params.toString();
+    }
+</script>
+
+<style>
+    .history-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .history-entry {
+        background-color: #f9f9f9;
+        padding: 15px;
+        border-radius: 10px;
+        border-left: 4px solid #007bff;
+        position: relative;
+    }
+
+    .filter-details {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        width: 90%;
+    }
+
+    .history-title {
+        font-size: 42px;
+        font-weight: bold;
+        margin-bottom: 40px;
+        text-align: center;
+        color: #2563eb;
+    }
+
+    p, h2 {
+        margin: 0;
+    }
+
+    .apply-filter-btn {
+        padding: 8px 16px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        position: absolute;
+        right: 15px;
+        top: 15px;
+    }
+
+    .apply-filter-btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+{{end}}

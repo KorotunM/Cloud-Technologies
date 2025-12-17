@@ -1,0 +1,13 @@
+.git
+.gitignore
+.env
+*.log
+tmp/
+dist/
+build/
+bin/
+node_modules/
+*.sqlite
+*.db
+*.swp
+.DS_Store

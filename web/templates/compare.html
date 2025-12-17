@@ -1,0 +1,62 @@
+{{define "compare"}}
+<div class="comparison-header">Сравнение ВУЗов</div>
+
+{{if .}}
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th class="parameter-cell">Параметр</th>
+                {{range .}}
+                <th>{{.Name}}</th>
+                {{end}}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="parameter-cell">Город</td>
+                {{range .}}<td>{{.City}}</td>{{end}}
+            </tr>
+            <tr>
+                <td class="parameter-cell">Общежитие</td>
+                {{range .}}<td class="{{if .HasDormitory}}checkmark{{else}}crossmark{{end}}">
+                    {{if .HasDormitory}}✅{{else}}❌{{end}}</td>{{end}}
+            </tr>
+            <tr>
+                <td class="parameter-cell">Военный учебный центр</td>
+                {{range .}}<td class="{{if .HasMilitary}}checkmark{{else}}crossmark{{end}}">
+                    {{if .HasMilitary}}✅{{else}}❌{{end}}</td>{{end}}
+            </tr>
+            <tr>
+                <td class="parameter-cell">Бюджетные места</td>
+                {{range .}}<td>{{.TotalBudgetPlaces}}</td>{{end}}
+            </tr>
+            <tr>
+                <td class="parameter-cell">Платные места</td>
+                {{range .}}<td>{{.TotalPaidPlaces}}</td>{{end}}
+            </tr>
+            <tr>
+                <td class="parameter-cell">Минимальная стоимость обучения</td>
+                {{range .}}<td class="currency">{{.MinTuitionFee}} руб.</td>{{end}}
+            </tr>
+            <tr>
+                <td class="parameter-cell">Минимальный проходной балл (бюджет)</td>
+                {{range .}}<td>{{.MinScoreBudget}}</td>{{end}}
+            </tr>
+            <tr>
+                <td class="parameter-cell">Минимальный проходной балл (платное)</td>
+                {{range .}}<td>{{.MinScorePaid}}</td>{{end}}
+            </tr>
+            <tr>
+                <td class="parameter-cell">Количество программ</td>
+                {{range .}}<td>{{.ProgramsCount}}</td>{{end}}
+            </tr>
+            <tr>
+                <td class="parameter-cell">Количество специальностей</td>
+                {{range .}}<td>{{.SpecialtiesCount}}</td>{{end}}
+            </tr>
+        </tbody>
+    </table>
+{{else}}
+    <p>Нет данных для сравнения.</p>
+{{end}}
+{{end}}

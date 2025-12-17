@@ -1,0 +1,249 @@
+{{define "index"}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Абитуриенту</title>
+    <link rel="stylesheet" href="/css/index_style.css">
+    <link rel="stylesheet" href="/css/modal.css">
+    <link rel="stylesheet" href="/css/university.css">
+    <script src="/js/modal.js" defer></script>
+    <script src="/js/pagination.js" defer></script>
+    <script src="/js/registration.js" defer></script>
+    <script src="/js/entry.js" defer></script>
+    <script src="/js/auth.js" defer></script>
+    <script src="/js/university.js" defer></script>
+    <script src="/js/logout.js" defer></script>
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <img src="/assets/logo.jpg" alt="logo">
+                <h1>Абитуриенту</h1>
+            </div>
+            <nav class="navigation-menu">
+                <ul>
+                    <li><a href="/">Главная</a></li>
+                    <li><a href="/compare">Сравнение</a></li>
+                    <li><a href="/favorites">Избранное</a></li>
+                    <li><a href="/history">История запросов</a></li>
+                </ul>
+            </nav>
+            <div id="user-info" style="display: none;">
+                <span id="user-email"></span>
+                <img src="/assets/logout.png" alt="Выход" id="logout-btn" class="logout-btn"
+                    style="cursor: pointer; width: 24px; height: 24px; margin-left: 10px;">
+            </div>
+            <button class="login-btn" id="login-btn" onclick="openMainModal()">Войти / Зарегистрироваться</button>
+        </div>
+    </header>
+
+
+    <!-- Modal -->
+    <div id="main-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('main-modal')">&times;</span>
+            <h2>Раскройте весь свой потенциал!</h2>
+            <p>Зарегистрируйтесь, чтобы получить доступ к 100% функциям приложения.</p>
+            <button class="primary-btn" onclick="openRegistrationModal()">Зарегистрироваться</button>
+            <button class="secondary-btn" onclick="openLoginModal()">Войти</button>
+            <div class="social-login">
+                <p>или войдите в систему через эти сервисы:</p>
+                <div class="social-icons">
+                    <a href="/auth/google/redirect" class="modal-socials-button">
+                        <img src="../assets/google-logo.png" alt="Google" class="icon" width="32" height="32">
+                    </a>
+                    <a href="/auth/vk/redirect" class="modal-socials-button">
+                        <img src="../assets/vk-logo.png" alt="VK" class="icon" width="32" height="32">
+                    </a>
+                    <script async src="https://telegram.org/js/telegram-widget.js?7"
+                        data-telegram-login="Abiturientambot" data-size="large" data-userpic="false"
+                        data-request-access="write" data-auth-url="/auth/telegram/callback">
+                        </script>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Modal -->
+    <div id="registration-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registration-modal')">&times;</span>
+            <h2>Регистрация</h2>
+            <input type="text" id="reg-email" placeholder="Email" class="modal-input">
+            <input type="password" id="reg-password" placeholder="Пароль" class="modal-input">
+            <input type="password" id="confirm-password" placeholder="Повторите пароль" class="modal-input">
+            <button class="primary-btn" onclick="registerUser()">Зарегистрироваться</button>
+        </div>
+    </div>
+
+
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('login-modal')">&times;</span>
+            <h2>Вход</h2>
+            <input type="text" id="login-email" placeholder="Email" class="modal-input">
+            <input type="password" id="login-password" placeholder="Пароль" class="modal-input">
+            <div class="checkbox-group">
+                <input type="checkbox" id="stay-logged-in">
+                <label for="stay-logged-in">Оставаться в системе</label>
+            </div>
+            <button class="primary-btn" onclick="loginUser()">Войти</button>
+        </div>
+    </div>
+
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <h2>Поиск вуза</h2>
+        <form method="GET" action="/universities?city=Москва" class="search-form">
+            <input type="text" name="city" placeholder="Город" class="{{if .Errors.CityError}}error-field{{end}}"
+                value="{{.City}}">
+            <select name="form">
+                <option value="all">Все формы</option>
+                <option value="очная">Очная</option>
+                <option value="заочная">Заочная</option>
+            </select>
+
+            <!-- Вторая строка с предметами и баллами -->
+            <div class="form-row">
+                <div class="dropdown-container">
+                    <button type="button" class="dropdown-button" onclick="toggleDropdown()">Выберите предметы
+                        ЕГЭ</button>
+                    <div class="dropdown-list" id="dropdown-subjects">
+                        {{range .Subjects}}
+                        <label class="subject-label">
+                            <input type="checkbox" name="subjects" value="{{.ID}}" class="subject-checkbox"> {{.Name}}
+                        </label>
+                        {{end}}
+                    </div>
+                </div>
+
+                <!-- Поле для суммарного количества баллов -->
+                <input type="number" name="totalScore" placeholder="Введите сумму баллов" id="total-score"
+                    class="{{if .Errors.ScoreError}}error-field{{else}}total-score{{end}}" value="{{.TotalScore}}">
+
+            </div>
+
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="dormitory" value="yes" {{if .Dormitory}}checked{{end}}>
+                    общежитие</label>
+                <label><input type="checkbox" name="military" value="yes" {{if .Military}}checked{{end}}> военный
+                    учебный центр</label>
+            </div>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="budget" value="yes" {{if .Budget}}checked{{end}}> бюджет</label>
+                <label><input type="checkbox" name="paid" value="yes" {{if .Paid}}checked{{end}}> платное</label>
+            </div>
+            <div class="button-group">
+                <button type="reset" class="clear-btn">Очистить</button>
+                <button type="submit" class="search-btn">Найти</button>
+            </div>
+        </form>
+
+
+        {{if or .Errors.CityError .Errors.ScoreError}}
+        <p class="error-summary">Ошибка - неверно введённые значения. Исправьте, пожалуйста!</p>
+        {{if .Errors.CityError}}
+        <p class="error-message">{{.Errors.CityError}}</p>
+        {{end}}
+        {{if .Errors.ScoreError}}
+        <p class="error-message">{{.Errors.ScoreError}}</p>
+        {{end}}
+        {{end}}
+
+
+        <p class="results-count">
+            {{if .Universities}}
+            Найдено вузов: {{len .Universities}}
+            {{else}}
+            Вузы не найдены.
+            {{end}}
+        </p>
+    </section>
+
+    <!-- Universities Section -->
+    <section class="university-list" id="university-list">
+        {{if gt (len .Universities) 0}}
+        {{template "university" $}}
+        {{else}}
+        <p class="no-results">Нет результатов, соответствующих вашему запросу.</p>
+        {{end}}
+    </section>
+
+    <div id="has-more" data-value="{{.HasMore}}"></div>
+    <div class="load-more-container">
+        {{if .HasMore}}
+        <button id="load-more" onclick="loadMore()">Загрузить ещё</button>
+        {{end}}
+    </div>
+
+
+
+    <!-- Скрипт для работы кастомного выпадающего списка -->
+    <script>
+
+        document.querySelector('.clear-btn').addEventListener('click', function (event) {
+            event.preventDefault(); // Остановить стандартное поведение кнопки "Очистить"
+
+            const form = document.querySelector('.search-form'); // Найти форму
+            form.reset(); // Сбросить стандартные элементы формы (input, select, checkbox)
+
+            // Очищаем кастомные значения (например, атрибуты value)
+            const inputs = form.querySelectorAll('input, select');
+            inputs.forEach(function (input) {
+                input.value = ''; // Сбросить значение
+            });
+
+            // Убираем флаги checked для чекбоксов
+            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(function (checkbox) {
+                checkbox.checked = false;
+            });
+
+            // Если есть текст ошибок, удаляем их
+            const errorMessages = document.querySelectorAll('.error-message');
+            errorMessages.forEach(function (error) {
+                error.textContent = ''; // Удаляем текст ошибки
+            });
+
+            const errorSummary = document.querySelector('.error-summary');
+            if (errorSummary) {
+                errorSummary.textContent = ''; // Убираем общий текст ошибок
+            }
+        });
+
+        // Функция для переключения видимости выпадающего списка
+        function toggleDropdown() {
+            var dropdown = document.getElementById("dropdown-subjects");
+            if (dropdown.style.display === "none" || dropdown.style.display === "") {
+                dropdown.style.display = "block";
+            } else {
+                dropdown.style.display = "none";
+            }
+        }
+
+        // Закрытие выпадающего списка, если пользователь кликнул вне его области, кроме элементов списка
+        window.onclick = function (event) {
+            if (!event.target.matches('.dropdown-button') && !event.target.closest('.dropdown-list')) {
+                var dropdowns = document.getElementsByClassName("dropdown-list");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === "block") {
+                        openDropdown.style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
+{{end}}

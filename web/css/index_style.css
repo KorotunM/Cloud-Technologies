@@ -1,0 +1,310 @@
+/* Основные стили */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f6fb;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+.header {
+    background-color: #ffffff;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.checkbox-group label {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    margin-right: 10px;
+    height: 60px;
+    width: 60px;
+    border-radius: 5px;
+}
+
+.navigation-menu ul {
+    display: flex;
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.navigation-menu a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 500;
+}
+
+.navigation-menu a:hover {
+    color: #0056b3;
+}
+
+/* Search Section */
+.search-section {
+    text-align: center;
+    padding: 40px;
+    background-color: #e6f0ff;
+    margin-top: 20px;
+}
+
+.search-section h2 {
+    font-size: 24px;
+    color: #004d99;
+    margin-bottom: 20px;
+}
+
+.search-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.search-form input[type="text"],
+.search-form select {
+    width: 200px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Стиль для контейнера второй строки */
+.form-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+}
+
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+    width: 45%;
+}
+
+.total-score {
+    width: 50%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.clear-btn {
+    background-color: transparent;
+    color: #007bff;
+    border: 1px solid #007bff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.clear-btn:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+/* Кнопка "Найти" (поиск) */
+.search-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.search-btn:hover {
+    background-color: #0056b3;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-group label {
+    font-size: 14px;
+    color: #333;
+}
+
+.results-count {
+    font-size: 18px;
+    color: #004d99;
+    margin-top: 20px;
+}
+
+/* Стили для кастомного выпадающего списка с чекбоксами */
+/* Стили для кастомного выпадающего списка с чекбоксами */
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+    width: 45%;
+    /* Уменьшено по ширине */
+}
+
+.total-score {
+    width: 25%;
+    /* Увеличена ширина поля для ввода баллов */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-left: 20px;
+    /* Добавлен отступ слева */
+}
+
+.dropdown-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+    cursor: pointer;
+    text-align: left;
+}
+
+.dropdown-list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #fff;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.subject-label {
+    display: block;
+    padding: 10px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.subject-label:hover {
+    background: #f1f1f1;
+}
+
+.subject-checkbox {
+    margin-right: 10px;
+}
+
+h1 {
+    color: #004d99;
+    font-size: 30px;
+    margin: 0;
+}
+
+.error-field {
+    border: 2px solid red;
+    background-color: #ffe6e6;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+.error-summary {
+    color: red;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.no-results {
+    text-align: center;
+    /* Выравнивание текста по центру */
+    margin: 20px 0;
+    /* Отступы сверху и снизу */
+    font-size: 1.2em;
+    /* Увеличение размера шрифта */
+    color: #555;
+    /* Цвет текста (опционально) */
+}
+
+.load-more-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+#load-more {
+    background-color: #003366;
+    color: #FFFFFF;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#load-more:hover {
+    background-color: #005599;
+    transform: scale(1.05);
+}
+
+#load-more:active {
+    background-color: #002244;
+    transform: scale(0.98);
+}
+
+.logout-btn {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.logout-btn:hover {
+    transform: scale(1.1);
+}
+
+.logout-btn {
+    bottom: 2px;
+    position: relative;
+}
+
+.main{
+    padding-top: 50px;
+}

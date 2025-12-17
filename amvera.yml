@@ -1,0 +1,15 @@
+meta:
+  environment: golang
+  toolchain:
+    name: go
+    version: 1.23.2
+build:
+  image: golang:1.23.2
+  context: ./  # Укажите путь до корня вашего проекта
+  dockerfile: code/Dockerfile  # Путь до Dockerfile
+run:
+  image: alpine:latest
+  persistenceMount: /data  # Для работы с внешними данными (если требуется)
+  containerPort: 8080
+  command: ["./server"]
+
