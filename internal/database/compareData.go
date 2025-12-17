@@ -10,7 +10,11 @@ func GetComparisonData(universityIDs []int) ([]models.ComparisonData, error) {
 
 	query := `
 		SELECT 
-			u.id, u.name, u.city, u.has_dormitory, u.has_military,
+			u.id,
+			u.name,
+			u.city,
+			(u.has_dormitory <> 0) AS has_dormitory,
+			(u.has_military <> 0) AS has_military,
 			COALESCE(SUM(d.budget_places), 0) AS total_budget_places,
 			COALESCE(SUM(d.paid_places), 0) AS total_paid_places,
 			COALESCE(MIN(d.tuition_fee), 0) AS min_tuition_fee,

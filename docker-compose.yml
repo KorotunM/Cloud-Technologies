@@ -5,17 +5,36 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: universities-app
     env_file:
       - .env
     ports:
       - "8080:8080"
     depends_on:
+      - postgres
       - redis
     restart: unless-stopped
 
+  postgres:
+    image: postgres:15
+    container_name: universities-postgres
+    environment:
+      POSTGRES_DB: universities
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./migrations:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
   redis:
-    image: redis:7-alpine
+    image: redis:7
+    container_name: universities-redis
     ports:
       - "6379:6379"
-    command: ["redis-server", "--save", "", "--appendonly", "no"]
     restart: unless-stopped
+
+volumes:
+  postgres_data:

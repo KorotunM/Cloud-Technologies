@@ -11,7 +11,14 @@ const Limit = 4
 
 func GetFilteredUniversities(city string, dormitory, military bool, offset int) []models.University {
 	query := `
-		SELECT u.id, u.name, u.city, u.has_dormitory, u.has_military, r.rank_position, u.photo_key
+		SELECT 
+			u.id,
+			u.name,
+			u.city,
+			(u.has_dormitory <> 0) AS has_dormitory,
+			(u.has_military <> 0) AS has_military,
+			r.rank_position,
+			u.photo_key
 		FROM universities u
 		LEFT JOIN university_ratings r ON u.id = r.university_id
 		WHERE 1=1
@@ -27,11 +34,13 @@ func GetFilteredUniversities(city string, dormitory, military bool, offset int) 
 	}
 
 	if dormitory {
-		query += " AND u.has_dormitory = true"
+		// has_dormitory stored as integer; non-zero means true
+		query += " AND u.has_dormitory <> 0"
 	}
 
 	if military {
-		query += " AND u.has_military = true"
+		// has_military stored as integer; non-zero means true
+		query += " AND u.has_military <> 0"
 	}
 
 	query += " GROUP BY u.id, r.rank_position, u.photo_key"

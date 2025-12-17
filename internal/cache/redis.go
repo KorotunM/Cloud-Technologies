@@ -23,12 +23,17 @@ func NewRedisClient(cfg config.RedisConfig) (*RedisClient, error) {
 		Password: cfg.Password,
 	})
 
-	if _, err := client.Ping(ctx).Result(); err != nil {
-		return nil, err
+	var lastErr error
+	for i := 0; i < 5; i++ {
+		if _, lastErr = client.Ping(ctx).Result(); lastErr == nil {
+			log.Println("Connected to Redis.")
+			return &RedisClient{Client: client}, nil
+		}
+		log.Printf("redis ping failed (attempt %d/5): %v", i+1, lastErr)
+		time.Sleep(2 * time.Second)
 	}
 
-	log.Println("Connected to Redis.")
-	return &RedisClient{Client: client}, nil
+	return nil, lastErr
 }
 
 func (r *RedisClient) Set(key string, value interface{}, expiration time.Duration) error {
